@@ -70,11 +70,9 @@ userSchema.methods.comparePassword = function (plainPassword, callback) {
 userSchema.methods.generateToken = function (callback) {
   var user = this;
   var token = jwt.sign({
-    exp: Math.floor(Date.now() / 1000) + (1),
+    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 2), // 2days for expiration
     data: user._id.toHexString()
   }, secretOrPrivateKey);
-  console.log(token, 'token')
-
   user.token = token;
   user.save(function (err, user) {
     if (err) return callback(err);
