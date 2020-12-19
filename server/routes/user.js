@@ -1,6 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require('../models/User')
+const { auth } = require('../middleware/auth')
+
+router.get('/auth', auth, (req, res) => {
+  const isAdmin = (role) => {
+    switch (role) {
+      case 0:
+        //0은 총괄 어드민
+        return true;
+      default:
+        return false;
+    }
+  }
+  res.status(200).json({
+    payload: {
+      _id: req.user._id,
+      email: req.user.email,
+      name: req.user.name,
+      lastname: req.user.lastname,
+      image: req.user.image,
+      role: req.user.role,
+      cart: req.user.cart,
+      isAdmin: isAdmin(req.user.role),
+      isAuth: true,
+    },
+    message: '정상적으로 사용자가 인증되었습니다.'
+  })
+})
 
 router.post('/register', (req, res) => {
   User.findOne({ email: req.body.email }, (error, alreadyExistUser) => {
