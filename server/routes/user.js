@@ -74,4 +74,19 @@ router.post('/login', (req, res) => {
   })
 })
 
+router.get('/logout', auth, (req, res) => {
+  User.findOneAndUpdate({ _id: req.user._id, },
+    { token: '' }, (error, user) => {
+      if (error) {
+        return res.status(400).json({ code: 'DatabaseError', message: '로그아웃하는 과정에서 문제가 발생했습니다.', error });
+      }
+      if (!user) {
+        return res.status(400).json({ code: 'NoSuchUser', message: '존재하지 않는 사용자입니다.' });
+      }
+      res.cookie('x_auth', '').status(200)
+        .json({ message: '로그아웃이 정상적으로 완료되었습니다.' });
+    })
+})
+
+
 module.exports = router
