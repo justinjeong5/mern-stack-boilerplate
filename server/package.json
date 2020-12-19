@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "mern stack boilerplate which includes user features",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justinjeong5/mern-stack-boilerplate.git"
+  },
+  "author": "justinjeong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/justinjeong5/mern-stack-boilerplate/issues"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6"
+  }
+}
