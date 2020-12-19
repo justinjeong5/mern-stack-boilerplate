@@ -3,6 +3,7 @@ const app = express();
 const config = require('./config/key')
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors')
 
 const mongoose = require('mongoose');
 mongoose.connect(config.mongoURI, {
@@ -16,6 +17,10 @@ mongoose.connect(config.mongoURI, {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors({
+  origin: true,
+  credentials: true,  // for cookie
+}));
 
 app.use('/api/user', require('./routes/user'));
 
