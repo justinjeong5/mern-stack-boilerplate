@@ -87,5 +87,38 @@ router.get('/logout', auth, (req, res) => {
     })
 })
 
+router.post('/confirm', auth, (req, res) => {
+  User.findOne({ _id: req.user._id }, (error, user) => {
+    if (!user) {
+      return res.status(400).json({ code: 'NoSuchUser', message: '존재하지 않는 사용자입니다.' });
+    }
+    if (error) {
+      return res.status(400).json({ code: 'DatabaseFindError', message: '기존 유저를 찾는 과정에서 문제가 발생했습니다.', error });
+    }
+    user.comparePassword(req.body.password, (error, isMatch) => {
+      if (error) {
+        return res.status(400).json({ code: 'DatabaseFindError', message: '비밀번호를 검증하는 과정에서 문제가 발생했습니다.', error });
+      }
+      if (!isMatch) {
+        return res.status(400).json({ code: 'PasswordMismatch', message: '비밀번호가 일치하지 않습니다.' });
+      }
+      res.status(200).json({ message: '본인인증이 정상적으로 완료되었습니다.' });
+    })
+  })
+})
+
+router.post('/edit', auth, (req, res) => {
+  User.findOneAndUpdate({ _id: req.user._id, },
+    { name: req.body.name }, (error, user) => {
+      if (error) {
+        return res.status(400).json({ code: 'DatabaseError', message: '회원정보를 찾는 과정에서 문제가 발생했습니다.', error });
+      }
+      if (!user) {
+        return res.status(400).json({ code: 'NoSuchUser', message: '존재하지 않는 사용자입니다.' });
+      }
+      res.status(200).json({ message: '회원정보가 정상적으로 변경되었습니다.' });
+    })
+})
+
 
 module.exports = router
