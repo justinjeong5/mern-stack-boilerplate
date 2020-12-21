@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom'
 
+import NavBar from './Header/NavBar'
 import LandingPage from './Main/LandingPage'
 import RegisterPage from './User/RegisterPage'
 import LoginPage from './User/LoginPage'
@@ -8,6 +9,7 @@ import LoginPage from './User/LoginPage'
 function App() {
   return (
     <div>
+      <NavBar />
       <Switch>
         <Route exact path='/' component={LandingPage} />
         <Route exact path='/register' component={RegisterPage} />
