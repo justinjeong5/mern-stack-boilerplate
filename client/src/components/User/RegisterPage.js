@@ -26,7 +26,7 @@ function RegisterPage(props) {
     if (registerUserError) {
       Message.error({ content: message, duration: 2 });
     }
-  }, [registerUserDone, registerUserError])
+  }, [registerUserDone, registerUserError, props.history, message])
 
   const onFinish = (values) => {
     dispatch({

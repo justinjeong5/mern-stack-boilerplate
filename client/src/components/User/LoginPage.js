@@ -28,7 +28,7 @@ function LoginPage(props) {
     if (loginUserError) {
       Message.error({ content: message, duration: 2 });
     }
-  }, [loginUserDone, loginUserError])
+  }, [loginUserDone, loginUserError, props.history, message])
 
   const initialValues = {
     rememberMe: true,

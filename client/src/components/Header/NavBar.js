@@ -10,7 +10,7 @@ const rightMenu = { style: { float: 'right' } }
 function NavBar(props) {
 
   const dispatch = useDispatch();
-  const { currentUser, logoutUserDone, logoutUserError } = useSelector(state => state.user)
+  const { currentUser, logoutUserDone, logoutUserError, message } = useSelector(state => state.user)
 
   const handleLogout = () => {
     dispatch({
@@ -23,9 +23,9 @@ function NavBar(props) {
       props.history.push('/');
     }
     if (logoutUserError) {
-      Message.error({ content: logoutUserError, duration: 2 });
+      Message.error({ content: message, duration: 2 });
     }
-  }, [logoutUserDone, logoutUserError])
+  }, [logoutUserDone, logoutUserError, props.history, message])
 
 
   return (
@@ -38,7 +38,7 @@ function NavBar(props) {
         <Menu.Item key="4" disabled ><Link to='/jayMall'>쇼핑</Link></Menu.Item>
         <Menu.Item key="5" disabled ><Link to='/jayTube'>유투브</Link></Menu.Item>
 
-        {currentUser
+        {currentUser?.isAuth
           ? <>
             <Menu.Item key="11" {...rightMenu} onClick={handleLogout}><Link to='/'><LogoutOutlined /></Link></Menu.Item>
           </>
