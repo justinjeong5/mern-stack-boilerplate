@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom'
 
+import auth from '../hoc/Authentication'
 import NavBar from './Header/NavBar'
 import LandingPage from './Main/LandingPage'
 import RegisterPage from './User/RegisterPage'
@@ -11,9 +12,9 @@ function App() {
     <div>
       <NavBar />
       <Switch>
-        <Route exact path='/' component={LandingPage} />
-        <Route exact path='/register' component={RegisterPage} />
-        <Route exact path='/login' component={LoginPage} />
+        <Route exact path='/' component={auth(LandingPage, null)} />
+        <Route exact path='/register' component={auth(RegisterPage, false)} />
+        <Route exact path='/login' component={auth(LoginPage, false)} />
       </Switch>
     </div>
   );

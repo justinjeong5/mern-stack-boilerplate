@@ -2,6 +2,7 @@ import {
   REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, REGISTER_USER_FAILURE,
   LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE,
   LOGOUT_USER_REQUEST, LOGOUT_USER_SUCCESS, LOGOUT_USER_FAILURE,
+  AUTHENTICATE_USER_REQUEST, AUTHENTICATE_USER_SUCCESS, AUTHENTICATE_USER_FAILURE,
 } from './types'
 
 const initialState = {
@@ -17,6 +18,9 @@ const initialState = {
   logoutUserLoading: false,
   logoutUserDone: false,
   logoutUserError: null,
+  authenticateUserLoading: false,
+  authenticateUserDone: false,
+  authenticateUserError: null,
 }
 
 const user = (state = initialState, action) => {
@@ -96,6 +100,28 @@ const user = (state = initialState, action) => {
         ...state,
         logoutUserLoading: false,
         logoutUserError: action.error.code,
+        message: action.error.message,
+      }
+    case AUTHENTICATE_USER_REQUEST:
+      return {
+        ...state,
+        authenticateUserLoading: true,
+        authenticateUserDone: false,
+        authenticateUserError: null,
+      }
+    case AUTHENTICATE_USER_SUCCESS:
+      return {
+        ...state,
+        authenticateUserLoading: false,
+        authenticateUserDone: true,
+        currentUser: { ...action.payload.payload },
+        message: action.payload.message,
+      }
+    case AUTHENTICATE_USER_FAILURE:
+      return {
+        ...state,
+        authenticateUserLoading: false,
+        authenticateUserError: action.error.code,
         message: action.error.message,
       }
     default:

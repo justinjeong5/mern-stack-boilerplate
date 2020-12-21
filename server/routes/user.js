@@ -15,13 +15,12 @@ router.get('/auth', auth, (req, res) => {
   }
   res.status(200).json({
     payload: {
-      _id: req.user._id,
+      userId: req.user._id,
       email: req.user.email,
       name: req.user.name,
       lastname: req.user.lastname,
       image: req.user.image,
       role: req.user.role,
-      cart: req.user.cart,
       isAdmin: isAdmin(req.user.role),
       isAuth: true,
     },
