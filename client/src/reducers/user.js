@@ -1,6 +1,7 @@
 import {
   REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, REGISTER_USER_FAILURE,
   LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE,
+  LOGOUT_USER_REQUEST, LOGOUT_USER_SUCCESS, LOGOUT_USER_FAILURE,
 } from './types'
 
 const initialState = {
@@ -13,6 +14,9 @@ const initialState = {
   loginUserLoading: false,
   loginUserDone: false,
   loginUserError: null,
+  logoutUserLoading: false,
+  logoutUserDone: false,
+  logoutUserError: null,
 }
 
 const user = (state = initialState, action) => {
@@ -30,6 +34,9 @@ const user = (state = initialState, action) => {
         registerUserLoading: false,
         registerUserDone: true,
         message: action.payload.message,
+        logoutUserLoading: false,
+        logoutUserDone: false,
+        logoutUserError: null,
       }
     case REGISTER_USER_FAILURE:
       return {
@@ -52,12 +59,43 @@ const user = (state = initialState, action) => {
         loginUserDone: true,
         currentUser: { ...action.payload.payload },
         message: action.payload.message,
+        logoutUserLoading: false,
+        logoutUserDone: false,
+        logoutUserError: null,
       }
     case LOGIN_USER_FAILURE:
       return {
         ...state,
         loginUserLoading: false,
         loginUserError: action.error.code,
+        message: action.error.message,
+      }
+    case LOGOUT_USER_REQUEST:
+      return {
+        ...state,
+        logoutUserLoading: true,
+        logoutUserDone: false,
+        logoutUserError: null,
+      }
+    case LOGOUT_USER_SUCCESS:
+      return {
+        ...state,
+        logoutUserLoading: false,
+        logoutUserDone: true,
+        currentUser: null,
+        message: action.payload.message,
+        registerUserLoading: false,
+        registerUserDone: false,
+        registerUserError: null,
+        loginUserLoading: false,
+        loginUserDone: false,
+        loginUserError: null,
+      }
+    case LOGOUT_USER_FAILURE:
+      return {
+        ...state,
+        logoutUserLoading: false,
+        logoutUserError: action.error.code,
         message: action.error.message,
       }
     default:

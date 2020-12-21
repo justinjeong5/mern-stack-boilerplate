@@ -1,11 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Menu } from 'antd';
-import { LoginOutlined, UserAddOutlined } from '@ant-design/icons'
+import { Menu, message as Message } from 'antd';
+import { LogoutOutlined, LoginOutlined, UserAddOutlined } from '@ant-design/icons'
+import { useDispatch, useSelector } from 'react-redux';
+import { LOGOUT_USER_REQUEST } from '../../reducers/types';
 
 const rightMenu = { style: { float: 'right' } }
 
-function NavBar() {
+function NavBar(props) {
+
+  const dispatch = useDispatch();
+  const { currentUser, logoutUserDone, logoutUserError } = useSelector(state => state.user)
+
+  const handleLogout = () => {
+    dispatch({
+      type: LOGOUT_USER_REQUEST
+    })
+  }
+
+  useEffect(() => {
+    if (logoutUserDone) {
+      props.history.push('/');
+    }
+    if (logoutUserError) {
+      Message.error({ content: logoutUserError, duration: 2 });
+    }
+  }, [logoutUserDone, logoutUserError])
+
+
   return (
     <>
       <Menu mode="horizontal">
@@ -16,8 +38,14 @@ function NavBar() {
         <Menu.Item key="4" disabled ><Link to='/jayMall'>쇼핑</Link></Menu.Item>
         <Menu.Item key="5" disabled ><Link to='/jayTube'>유투브</Link></Menu.Item>
 
-        <Menu.Item key="12" {...rightMenu} ><Link to='/register'><UserAddOutlined /></Link></Menu.Item>
-        <Menu.Item key="11" {...rightMenu} ><Link to='/login'><LoginOutlined /></Link></Menu.Item>
+        {currentUser
+          ? <>
+            <Menu.Item key="11" {...rightMenu} onClick={handleLogout}><Link to='/'><LogoutOutlined /></Link></Menu.Item>
+          </>
+          : <>
+            <Menu.Item key="12" {...rightMenu} ><Link to='/register'><UserAddOutlined /></Link></Menu.Item>
+            <Menu.Item key="11" {...rightMenu} ><Link to='/login'><LoginOutlined /></Link></Menu.Item>
+          </>}
       </Menu >
     </>
   )
