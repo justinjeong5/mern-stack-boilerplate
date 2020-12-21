@@ -2,33 +2,36 @@ import { all, fork, put, call, takeLatest } from 'redux-saga/effects'
 import axios from 'axios';
 
 import {
-
+  REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, REGISTER_USER_FAILURE,
 } from '../reducers/types'
 
-function UserAPI(data) {
-  return axios.post('', data)
+function registerAPI(data) {
+  return axios.post('/api/user/register', data)
 }
 
-function* user(action) {
+function* register(action) {
   try {
-    yield call(UserAPI, action.payload);
+    const result = yield call(registerAPI, action.payload);
     yield put({
-
+      type: REGISTER_USER_SUCCESS,
+      payload: result.data,
     })
   } catch (error) {
     console.error(error)
     yield put({
-
+      type: REGISTER_USER_FAILURE,
+      error: error.response.data,
     })
   }
 }
 
-function* watchUser() {
-  yield takeLatest(User_USER_REQUEST, user)
+function* watchRegister() {
+  yield takeLatest(REGISTER_USER_REQUEST, register)
 }
+
 
 export default function* userSaga() {
   yield all([
-    fork(watchUser),
+    fork(watchRegister),
   ])
 }
