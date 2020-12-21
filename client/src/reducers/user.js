@@ -3,6 +3,8 @@ import {
   LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE,
   LOGOUT_USER_REQUEST, LOGOUT_USER_SUCCESS, LOGOUT_USER_FAILURE,
   AUTHENTICATE_USER_REQUEST, AUTHENTICATE_USER_SUCCESS, AUTHENTICATE_USER_FAILURE,
+  EDIT_USER_REQUEST, EDIT_USER_SUCCESS, EDIT_USER_FAILURE,
+  CONFIRM_USER_REQUEST, CONFIRM_USER_SUCCESS, CONFIRM_USER_FAILURE,
 } from './types'
 
 const initialState = {
@@ -21,6 +23,12 @@ const initialState = {
   authenticateUserLoading: false,
   authenticateUserDone: false,
   authenticateUserError: null,
+  confirmUserLoading: false,
+  confirmUserDone: false,
+  confirmUserError: null,
+  editUserLoading: false,
+  editUserDone: false,
+  editUserError: null,
 }
 
 const user = (state = initialState, action) => {
@@ -38,9 +46,6 @@ const user = (state = initialState, action) => {
         registerUserLoading: false,
         registerUserDone: true,
         message: action.payload.message,
-        logoutUserLoading: false,
-        logoutUserDone: false,
-        logoutUserError: null,
       }
     case REGISTER_USER_FAILURE:
       return {
@@ -63,9 +68,6 @@ const user = (state = initialState, action) => {
         loginUserDone: true,
         currentUser: { ...action.payload.payload },
         message: action.payload.message,
-        logoutUserLoading: false,
-        logoutUserDone: false,
-        logoutUserError: null,
       }
     case LOGIN_USER_FAILURE:
       return {
@@ -88,12 +90,6 @@ const user = (state = initialState, action) => {
         logoutUserDone: true,
         currentUser: null,
         message: action.payload.message,
-        registerUserLoading: false,
-        registerUserDone: false,
-        registerUserError: null,
-        loginUserLoading: false,
-        loginUserDone: false,
-        loginUserError: null,
       }
     case LOGOUT_USER_FAILURE:
       return {
@@ -116,12 +112,71 @@ const user = (state = initialState, action) => {
         authenticateUserDone: true,
         currentUser: { ...action.payload.payload },
         message: action.payload.message,
+
+        registerUserLoading: false,
+        registerUserDone: false,
+        registerUserError: null,
+        loginUserLoading: false,
+        loginUserDone: false,
+        loginUserError: null,
+        logoutUserLoading: false,
+        logoutUserDone: false,
+        logoutUserError: null,
+        confirmUserLoading: false,
+        confirmUserDone: false,
+        confirmUserError: null,
+        editUserLoading: false,
+        editUserDone: false,
+        editUserError: null,
       }
     case AUTHENTICATE_USER_FAILURE:
       return {
         ...state,
         authenticateUserLoading: false,
         authenticateUserError: action.error.code,
+        message: action.error.message,
+      }
+    case CONFIRM_USER_REQUEST:
+      return {
+        ...state,
+        confirmUserLoading: true,
+        confirmUserDone: false,
+        confirmUserError: null,
+      }
+    case CONFIRM_USER_SUCCESS:
+      return {
+        ...state,
+        confirmUserLoading: false,
+        confirmUserDone: true,
+        message: action.payload.message,
+      }
+    case CONFIRM_USER_FAILURE:
+      return {
+        ...state,
+        confirmUserLoading: false,
+        confirmUserError: action.error.code,
+        message: action.error.message,
+      }
+    case EDIT_USER_REQUEST:
+      return {
+        ...state,
+        editUserLoading: true,
+        editUserDone: false,
+        editUserError: null,
+      }
+    case EDIT_USER_SUCCESS:
+      return {
+        ...state,
+        editUserLoading: false,
+        editUserDone: true,
+        currentUser: { isAuth: true },
+        message: action.payload.message,
+      }
+    case EDIT_USER_FAILURE:
+      return {
+        ...state,
+        editUserLoading: false,
+        editUserError: action.error.code,
         message: action.error.message,
       }
     default:

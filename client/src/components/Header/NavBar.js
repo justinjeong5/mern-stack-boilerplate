@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Menu, message as Message } from 'antd';
-import { LogoutOutlined, LoginOutlined, UserAddOutlined } from '@ant-design/icons'
+import { LogoutOutlined, LoginOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux';
 import { LOGOUT_USER_REQUEST } from '../../reducers/types';
 
@@ -40,6 +40,7 @@ function NavBar(props) {
 
         {currentUser?.isAuth
           ? <>
+            <Menu.Item key="12" {...rightMenu} ><Link to='/edit'><UserOutlined /></Link></Menu.Item>
             <Menu.Item key="11" {...rightMenu} onClick={handleLogout}><Link to='/'><LogoutOutlined /></Link></Menu.Item>
           </>
           : <>
