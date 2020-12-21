@@ -30,7 +30,7 @@ function NavBar(props) {
 
   return (
     <>
-      <Menu mode="horizontal">
+      <Menu mode="horizontal" style={{ position: 'fixed', top: 0, width: '100%' }}>
         <Menu.Item ><Link to='/'>HOME</Link></Menu.Item>
         <Menu.Item key="1" disabled ><Link to='/blog'>블로그</Link></Menu.Item>
         <Menu.Item key="2" disabled ><Link to='/MovieTrend'>영화</Link></Menu.Item>
