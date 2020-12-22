@@ -1,55 +1,55 @@
-import React, { useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { Menu, message as Message } from 'antd';
-import { LogoutOutlined, LoginOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons'
-import { useDispatch, useSelector } from 'react-redux';
-import { LOGOUT_USER_REQUEST } from '../../reducers/types';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
+import { Drawer, Button } from 'antd';
+import { MenuOutlined } from '@ant-design/icons'
+import './NavBar/NavBar.css';
+import LeftMenu from './NavBar/LeftMenu';
+import RightMenu from './NavBar/RightMenu';
 
-const rightMenu = { style: { float: 'right' } }
+function NavBar() {
+  const [visible, setVisible] = useState(false)
 
-function NavBar(props) {
+  const showDrawer = () => {
+    setVisible(true)
+  };
 
-  const dispatch = useDispatch();
-  const { currentUser, logoutUserDone, logoutUserError, message } = useSelector(state => state.user)
-
-  const handleLogout = () => {
-    dispatch({
-      type: LOGOUT_USER_REQUEST
-    })
-  }
-
-  useEffect(() => {
-    if (logoutUserDone) {
-      props.history.push('/');
-    }
-    if (logoutUserError) {
-      Message.error({ content: message, duration: 2 });
-    }
-  }, [logoutUserDone, logoutUserError, props.history, message])
-
+  const onClose = () => {
+    setVisible(false)
+  };
 
   return (
-    <>
-      <Menu mode="horizontal" style={{ position: 'fixed', top: 0, width: '100%' }}>
-        <Menu.Item ><Link to='/'>HOME</Link></Menu.Item>
-        <Menu.Item key="1" disabled ><Link to='/blog'>블로그</Link></Menu.Item>
-        <Menu.Item key="2" disabled ><Link to='/MovieTrend'>영화</Link></Menu.Item>
-        <Menu.Item key="3" disabled ><Link to='/jayTalk'>채팅</Link></Menu.Item>
-        <Menu.Item key="4" disabled ><Link to='/jayMall'>쇼핑</Link></Menu.Item>
-        <Menu.Item key="5" disabled ><Link to='/jayTube'>유투브</Link></Menu.Item>
-
-        {currentUser?.isAuth
-          ? <>
-            <Menu.Item key="12" {...rightMenu} ><Link to='/edit'><UserOutlined /></Link></Menu.Item>
-            <Menu.Item key="11" {...rightMenu} onClick={handleLogout}><Link to='/'><LogoutOutlined /></Link></Menu.Item>
-          </>
-          : <>
-            <Menu.Item key="12" {...rightMenu} ><Link to='/register'><UserAddOutlined /></Link></Menu.Item>
-            <Menu.Item key="11" {...rightMenu} ><Link to='/login'><LoginOutlined /></Link></Menu.Item>
-          </>}
-      </Menu >
-    </>
+    <nav className="menu" style={{ position: 'fixed', top: 0, zIndex: 5, width: '100%' }}>
+      <div className="menu__container">
+        <div className="menu_left">
+          <LeftMenu mode="horizontal" />
+        </div>
+        <div className="menu_rigth">
+          <RightMenu mode="horizontal" />
+        </div>
+        <div className="menu__mobile-title">
+          <Link to='/'>HOME</Link>
+        </div>
+        <Button
+          className="menu__mobile-button"
+          type="primary"
+          onClick={showDrawer}
+        >
+          <MenuOutlined />
+        </Button>
+        <Drawer
+          title="Boilerplate"
+          placement="right"
+          className="menu_drawer"
+          closable={false}
+          onClose={onClose}
+          visible={visible}
+        >
+          <LeftMenu mode="inline" />
+          <RightMenu mode="inline" />
+        </Drawer>
+      </div>
+    </nav>
   )
 }
 
-export default withRouter(NavBar)
+export default NavBar
